@@ -1,0 +1,419 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:service.periferic,code:"
+msgid "Codigo"
+msgstr "Código"
+
+msgctxt "field:service.periferic,create_date:"
+msgid "Create Date"
+msgstr "Fecha de Creación"
+
+msgctxt "field:service.periferic,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:service.periferic,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:service.periferic,name:"
+msgid "Periferic"
+msgstr "Periferico"
+
+msgctxt "field:service.periferic,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:service.periferic,write_date:"
+msgid "Write Date"
+msgstr "Fecha de Modificación"
+
+msgctxt "field:service.periferic,write_uid:"
+msgid "Write User"
+msgstr "Modificado por Usuario"
+
+msgctxt "field:service.service,accessories:"
+msgid "Accessories"
+msgstr "Accesorios"
+
+msgctxt "field:service.service,case_number:"
+msgid "Case number"
+msgstr "Numero de caso"
+
+msgctxt "field:service.service,company:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "field:service.service,create_date:"
+msgid "Create Date"
+msgstr "Fecha de Creación"
+
+msgctxt "field:service.service,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:service.service,delivery_date:"
+msgid "Estimated Delivery Date"
+msgstr "Fecha estimada entrega"
+
+msgctxt "field:service.service,entry_date:"
+msgid "Entry Date"
+msgstr "Fecha de Ingreso"
+
+msgctxt "field:service.service,garanty:"
+msgid "Garanty"
+msgstr "Garantia"
+
+msgctxt "field:service.service,history_lines:"
+msgid "Lines"
+msgstr "Lineas"
+
+msgctxt "field:service.service,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:service.service,invoice_date:"
+msgid "Invoice Date"
+msgstr "Fecha de factura"
+
+msgctxt "field:service.service,invoice_number:"
+msgid "Invoice number"
+msgstr "Número de factura"
+
+msgctxt "field:service.service,lines:"
+msgid "Lines"
+msgstr "Lineas"
+
+msgctxt "field:service.service,number_service:"
+msgid "No. Comprobante"
+msgstr ""
+
+msgctxt "field:service.service,observations:"
+msgid "Observations"
+msgstr "Observaciones"
+
+msgctxt "field:service.service,party:"
+msgid "Party"
+msgstr "Cliente"
+
+msgctxt "field:service.service,photo:"
+msgid "Factura formato XML"
+msgstr ""
+
+msgctxt "field:service.service,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:service.service,remission:"
+msgid "No. guide remission"
+msgstr "No. guía remisión"
+
+msgctxt "field:service.service,send_date:"
+msgid "Send Date"
+msgstr "Fecha de envío"
+
+msgctxt "field:service.service,state:"
+msgid "State"
+msgstr "Estado"
+
+msgctxt "field:service.service,technical:"
+msgid "Technical"
+msgstr "Técnico"
+
+msgctxt "field:service.service,total:"
+msgid "Total"
+msgstr ""
+
+msgctxt "field:service.service,transport:"
+msgid "Transport"
+msgstr "Transpote"
+
+msgctxt "field:service.service,write_date:"
+msgid "Write Date"
+msgstr "Fecha de Modificación"
+
+msgctxt "field:service.service,write_uid:"
+msgid "Write User"
+msgstr "Modificado por Usuario"
+
+msgctxt "field:service.service.history_lines,create_date:"
+msgid "Create Date"
+msgstr "Fecha de Creación"
+
+msgctxt "field:service.service.history_lines,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:service.service.history_lines,date:"
+msgid "Date"
+msgstr "Fecha"
+
+msgctxt "field:service.service.history_lines,description:"
+msgid "Description"
+msgstr "Descripción"
+
+msgctxt "field:service.service.history_lines,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:service.service.history_lines,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:service.service.history_lines,service:"
+msgid "Service"
+msgstr "Servicio"
+
+msgctxt "field:service.service.history_lines,write_date:"
+msgid "Write Date"
+msgstr "Fecha de Modificación"
+
+msgctxt "field:service.service.history_lines,write_uid:"
+msgid "Write User"
+msgstr "Modificado por Usuario"
+
+msgctxt "field:service.service.line,create_date:"
+msgid "Create Date"
+msgstr "Fecha de Creación"
+
+msgctxt "field:service.service.line,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:service.service.line,failure:"
+msgid "Failure"
+msgstr "Falla"
+
+msgctxt "field:service.service.line,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:service.service.line,model:"
+msgid "Model"
+msgstr "Modelo"
+
+msgctxt "field:service.service.line,periferic:"
+msgid "Periferic"
+msgstr "Periferico"
+
+msgctxt "field:service.service.line,product:"
+msgid "Product"
+msgstr "Productos"
+
+msgctxt "field:service.service.line,product:"
+msgid "Type Work"
+msgstr "Tipo de Trabajo"
+
+msgctxt "field:service.service.line,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:service.service.line,reference_amount:"
+msgid "Reference Amount"
+msgstr "Costo referencial"
+
+msgctxt "field:service.service.line,series:"
+msgid "Series"
+msgstr "Serie"
+
+msgctxt "field:service.service.line,service:"
+msgid "Service"
+msgstr "Servicio"
+
+msgctxt "field:service.service.line,technical:"
+msgid "Technical"
+msgstr "Técnico"
+
+msgctxt "field:service.service.line,trademark:"
+msgid "Trademark"
+msgstr "Marca"
+
+msgctxt "field:service.service.line,write_date:"
+msgid "Write Date"
+msgstr "Fecha de Modificación"
+
+msgctxt "field:service.service.line,write_uid:"
+msgid "Write User"
+msgstr "Modificado por Usuario"
+
+msgctxt "field:service.trademark,code:"
+msgid "Codigo"
+msgstr "Código"
+
+msgctxt "field:service.trademark,create_date:"
+msgid "Create Date"
+msgstr "Fecha de Creación"
+
+msgctxt "field:service.trademark,create_uid:"
+msgid "Create User"
+msgstr "Usuario creación"
+
+msgctxt "field:service.trademark,id:"
+msgid "ID"
+msgstr "ID"
+
+msgctxt "field:service.trademark,name:"
+msgid "Trademark"
+msgstr "Marca"
+
+msgctxt "field:service.trademark,rec_name:"
+msgid "Name"
+msgstr "Nombre"
+
+msgctxt "field:service.trademark,write_date:"
+msgid "Write Date"
+msgstr "Fecha de Modificación"
+
+msgctxt "field:service.trademark,write_uid:"
+msgid "Write User"
+msgstr "Modificado por Usuario"
+
+msgctxt "help:service.service,garanty:"
+msgid "Income Garanty"
+msgstr "Ingreso por garantia"
+
+msgctxt "help:service.service,photo:"
+msgid "Cargar el archivo xml para firma y autorizacion"
+msgstr ""
+
+msgctxt "model:ir.action,name:"
+msgid "Service Center"
+msgstr "Centro Servicio Técnico"
+
+msgctxt "model:ir.action,name:act_service_form"
+msgid "Registry"
+msgstr "Registros"
+
+msgctxt "model:ir.action,name:act_service_out_form"
+msgid "Registry"
+msgstr "Registros"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_all"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_delivered"
+msgid "Delivered"
+msgstr "Entregado"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_draft"
+msgid "Pending"
+msgstr "Pendiente"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_ready"
+msgid "Ready"
+msgstr "Listo"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_review"
+msgid "In review"
+msgstr "En Revisión"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_warranty"
+msgid "Warranty not cover"
+msgstr "No cubre garantia"
+
+msgctxt "model:ir.action.act_window.domain,name:act_service_domain_without"
+msgid "Without Solution"
+msgstr "Sin Solución"
+
+msgctxt "model:ir.ui.menu,name:menu_service_form"
+msgid "Registry"
+msgstr "Registros"
+
+msgctxt "model:ir.ui.menu,name:service_center"
+msgid "Service Center"
+msgstr "Centro Servicio Técnico"
+
+msgctxt "model:service.periferic,name:"
+msgid "Periferic"
+msgstr "Periferico"
+
+msgctxt "model:service.service,name:"
+msgid "Service"
+msgstr "Servicio"
+
+msgctxt "model:service.service.history_lines,name:"
+msgid "History Line"
+msgstr "Lineas de Historial"
+
+msgctxt "model:service.service.line,name:"
+msgid "Service Line"
+msgstr "Linea de Servicio"
+
+msgctxt "model:service.trademark,name:"
+msgid "Trademark"
+msgstr "Marca"
+
+msgctxt "selection:service.service,state:"
+msgid "Delivered"
+msgstr "Entregado"
+
+msgctxt "selection:service.service,state:"
+msgid "In Review"
+msgstr "En revisión"
+
+msgctxt "selection:service.service,state:"
+msgid "Pending"
+msgstr "Pendiente"
+
+msgctxt "selection:service.service,state:"
+msgid "Ready"
+msgstr "Listo"
+
+msgctxt "selection:service.service,state:"
+msgid "Warranty not cover"
+msgstr "No cubre garantia"
+
+msgctxt "selection:service.service,state:"
+msgid "Without Solution"
+msgstr "Sin Solución"
+
+msgctxt "view:service.service.line:"
+msgid "General"
+msgstr "General"
+
+msgctxt "view:service.service.line:"
+msgid "Service Line"
+msgstr "Lineas de servicio"
+
+msgctxt "view:service.service.line:"
+msgid "Service Lines"
+msgstr "Lineas de servicio"
+
+msgctxt "view:service.service:"
+msgid "History"
+msgstr "Historial"
+
+msgctxt "view:service.service:"
+msgid "Invoice"
+msgstr ""
+
+msgctxt "view:service.service:"
+msgid "Invoices"
+msgstr ""
+
+msgctxt "view:service.service:"
+msgid "Service"
+msgstr "Servicio"
+
+msgctxt "view:service.service:"
+msgid "_Delivered"
+msgstr "Entregar"
+
+msgctxt "view:service.service:"
+msgid "_In review"
+msgstr "En revisión"
+
+msgctxt "view:service.service:"
+msgid "_Ready"
+msgstr "Listo"
+
+msgctxt "view:service.service:"
+msgid "_Warranty not cover"
+msgstr "No cubre garantia"
+
+msgctxt "view:service.service:"
+msgid "_Without Solution"
+msgstr "Sin Solución"

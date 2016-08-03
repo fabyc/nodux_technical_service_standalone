@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tree string="Service Lines">
+    <field name="service"/>
+    <field name="periferic"/>
+    <field name="trademark"/>
+    <field name="model"/>
+    <field name="series"/>
+    <field name="failure"/>
+    <field name="technical"/>
+    <field name="product"/>
+    <field name="reference_amount"/>
+</tree>

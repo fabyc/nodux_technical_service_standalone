@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<form string="Service" col="6" cursor="party">
+    <label name="type"/>
+    <field name="type" invisible="1"/>
+    <newline/>
+    <label name="company"/>
+    <field name="company"/>
+    <label name="party"/>
+    <field name="party"/>
+    <label name="number_service"/>
+    <field name="number_service"/>
+    <newline/>
+    <label name="garanty"/>
+    <field name="garanty"/>
+    <label name="entry_date"/>
+    <field name="entry_date"/>
+    <label name="delivery_date"/>
+    <field name="delivery_date"/>
+    <newline/>
+    <label name="invoice_date"/>
+    <field name="invoice_date"/>
+    <label name="invoice_number"/>
+    <field name="invoice_number"/>
+    <label name="case_number"/>
+    <field name="case_number"/>
+    <newline/>
+    <label name="send_date"/>
+    <field name="send_date"/>
+    <label name="remission"/>
+    <field name="remission"/>
+    <label name="transport"/>
+    <field name="transport"/>
+    <newline/>
+    <notebook colspan="6">
+        <page string="Service" id="service" col="6">
+            <field name="lines" colspan="6"
+                view_ids="nodux_technical_service.service_line_view_tree_sequence"/>
+        </page>
+
+        <page string="History" id="history">
+          <field name="history_lines" colspan="6"
+              view_ids="nodux_technical_service.service_history_lines_view_tree_sequence"/>
+        </page>
+    </notebook>
+    <label name="accessories"/>
+    <field name="accessories" colspan="2"
+        spell="Eval('party_lang')"/>
+    <label name="observations"/>
+    <field name="observations" colspan="2"
+        spell="Eval('party_lang')"/>
+    <newline/>
+    <label name="total"/>
+    <field name="total"/>
+    <newline/>
+    <group col="2" colspan="2" id="state">
+        <label name="state"/>
+        <field name="state"/>
+    </group>
+    <newline/>
+    <group col="5" colspan="4" id="buttons">
+        <button name="review" string="_In review"
+            icon="tryton-go-next"/>
+        <button name="ready" string="_Ready"
+            icon="tryton-ok"/>
+        <button name="without" string="_Without Solution"
+            icon="tryton-cancel"/>
+        <button name="warranty" string="_Warranty not cover"
+            icon="tryton-cancel"/>
+        <button name="delivered" string="_Delivered"
+            icon="tryton-go-next"/>
+
+    </group>
+</form>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- This file is part of Tryton.  The COPYRIGHT file at the top level of
+this repository contains the full copyright notices and license terms. -->
+<tree string="Services">
+    <field name="number_service"/>
+    <field name="party"/>
+    <field name="entry_date"/>
+    <field name="delivery_date"/>
+    <field name="state"/>
+</tree>
