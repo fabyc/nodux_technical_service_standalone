@@ -74,4 +74,7 @@ this repository contains the full copyright notices and license terms. -->
             icon="tryton-go-next"/>
 
     </group>
+    <newline/>
+    <field name="state_date" invisible="1"/>
+    <newline/>
 </form>

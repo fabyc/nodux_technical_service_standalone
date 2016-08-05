@@ -178,15 +178,15 @@ class Service(Workflow, ModelSQL, ModelView):
         pool = Pool()
         Date = pool.get('ir.date')
         date_now = Date.today()
+        result = {n: {s.id: '' for s in services} for n in names}
         for name in names:
             for service in services:
-                if delivery_date < date_now:
+                if (service.delivery_date < date_now) and (service.state != 'delivered'):
                     result[name][service.id] = 'vencida'
-                elif delivery_date == date_now:
+                elif (service.delivery_date == date_now) and (service.state != 'delivered'):
                     result[name][service.id] = 'vence_hoy'
                 else:
                     result[name][service.id] = ''
-                print "Anrtes de poner result", result
         return result
 
     @staticmethod
@@ -441,12 +441,7 @@ class HistoryLine(ModelSQL, ModelView):
                 'create': ('You can not add a line to history "%(invoice)s" '
                     'that is delivered.'),
                 })
-    """
-    @staticmethod
-    def default_date():
-        Date = Pool().get('ir.datetime')
-        return Date.today()
-    """
+
     @fields.depends('description')
     def on_change_description(self):
         res = {}
@@ -455,7 +450,6 @@ class HistoryLine(ModelSQL, ModelView):
             user = User(Transaction().user)
             if user:
                 res['user'] = user.name
-            print "Resultado", res
         return res
 
     @staticmethod
