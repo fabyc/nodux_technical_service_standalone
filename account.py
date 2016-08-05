@@ -12,17 +12,30 @@ class FiscalYear:
     __name__ = 'account.fiscalyear'
 
     service_sequence = fields.Many2One('ir.sequence.strict',
-        'Service Center Sequence',
+        'Service Center Sequence', required= True,
         domain=[
+            ('code', '=', 'service.service'),
             ['OR',
                 ('company', '=', Eval('company')),
                 ('company', '=', None),
                 ],
             ],
         context={
+            'code': 'service.service',
             'company': Eval('company'),
             },
         depends=['company'])
+
+    @classmethod
+    def __setup__(cls):
+        super(FiscalYear, cls).__setup__()
+        cls._error_messages.update({
+                'change_invoice_sequence': 'You can not change '
+                    'invoice sequence in fiscal year "%s" because there are '
+                    'already posted invoices in this fiscal year.',
+                'different_service_sequence': 'Fiscal year "%(first)s" and '
+                    '"%(second)s" have the same invoice sequence.',
+                })
 
     @classmethod
     def validate(cls, years):
@@ -31,40 +44,37 @@ class FiscalYear:
             year.check_service_sequences()
 
     def check_service_sequences(self):
-        for sequence in ('service_sequence', 'service_sequence'):
-            fiscalyears = self.search([
-                    (sequence, '=', getattr(self, sequence).id),
-                    ('id', '!=', self.id),
-                    ])
-            if fiscalyears:
-                self.raise_user_error('different_invoice_sequence', {
-                        'first': self.rec_name,
-                        'second': fiscalyears[0].rec_name,
-                        })
+        fiscalyears = self.search([
+                ('service_sequence', '=', getattr(self, 'service_sequence').id),
+                ('id', '!=', self.id),
+                ])
+        if fiscalyears:
+            self.raise_user_error('different_service_sequence', {
+                    'first': self.rec_name,
+                    'second': fiscalyears[0].rec_name,
+                    })
 
     @classmethod
     def write(cls, *args):
         Service = Pool().get('service.service')
-
         actions = iter(args)
         for fiscalyears, values in zip(actions, actions):
-            for sequence in ('service_sequence', 'service_sequence'):
-                    if not values.get(sequence):
-                        continue
-                    for fiscalyear in fiscalyears:
-                        if (getattr(fiscalyear, sequence)
-                                and (getattr(fiscalyear, sequence).id !=
-                                    values[sequence])):
-                            if Service.search([
-                                        ('entry_date', '>=',
-                                            fiscalyear.start_date),
-                                        ('entry_date', '<=',
-                                            fiscalyear.end_date),
-                                        ('number_service', '!=', None),
-                                        ('type', '=', sequence[:-9]),
-                                        ]):
-                                cls.raise_user_error('change_invoice_sequence',
-                                    (fiscalyear.rec_name,))
+            if not values.get('service_sequence'):
+                continue
+            for fiscalyear in fiscalyears:
+                if (getattr(fiscalyear, 'service_sequence')
+                        and (getattr(fiscalyear, 'service_sequence').id !=
+                            values['service_sequence'])):
+                    if Service.search([
+                                ('entry_date', '>=',
+                                    fiscalyear.start_date),
+                                ('entry_date', '<=',
+                                    fiscalyear.end_date),
+                                ('number_service', '!=', None),
+                                ('type', '=', 'service_sequence'[:-9]),
+                                ]):
+                        cls.raise_user_error('change_service_sequence',
+                            (fiscalyear.rec_name,))
         super(FiscalYear, cls).write(*args)
 
 class Period:
@@ -72,10 +82,26 @@ class Period:
 
     service_sequence = fields.Many2One('ir.sequence.strict',
         'Service Center Sequence',
+        domain=[('code', '=', 'service.service')],
+        context={'code': 'service.service'},
         states={
             'invisible': Eval('type') != 'standard',
             },
         depends=['type'])
+
+    @classmethod
+    def __setup__(cls):
+        super(Period, cls).__setup__()
+        cls._error_messages.update({
+                'change_service_sequence': 'You can not change the service '
+                    'sequence in period "%s" because there is already an '
+                    'service posted in this period',
+                'different_service_sequence': 'Period "%(first)s" and '
+                    '"%(second)s" have the same service sequence.',
+                'different_period_fiscalyear_company': 'Period "%(period)s" '
+                    'must have the same company as its fiscal year '
+                    '(%(fiscalyear)s).'
+                })
 
     @classmethod
     def validate(cls, periods):
@@ -84,25 +110,23 @@ class Period:
             period.check_service_sequences()
 
     def check_service_sequences(self):
-        for sequence_name in ('service_sequence', 'service_sequence'):
-            sequence = getattr(self, sequence_name)
-            if not sequence:
-                continue
-            periods = self.search([
-                    (sequence_name, '=', sequence.id),
-                    ('fiscalyear', '!=', self.fiscalyear.id),
-                    ])
-            if periods:
-                self.raise_user_error('different_invoice_sequence', {
-                        'first': self.rec_name,
-                        'second': periods[0].rec_name,
-                        })
-            if (sequence.company
-                    and sequence.company != self.fiscalyear.company):
-                self.raise_user_error('different_period_fiscalyear_company', {
-                        'period': self.rec_name,
-                        'fiscalyear': self.fiscalyear.rec_name,
-                        })
+        sequence = getattr(self, 'service_sequence')
+
+        periods = self.search([
+                ('service_sequence', '=', sequence.id),
+                ('fiscalyear', '!=', self.fiscalyear.id),
+                ])
+        if periods:
+            self.raise_user_error('different_service_sequence', {
+                    'first': self.rec_name,
+                    'second': periods[0].rec_name,
+                    })
+        if (sequence.company
+                and sequence.company != self.fiscalyear.company):
+            self.raise_user_error('different_period_fiscalyear_company', {
+                    'period': self.rec_name,
+                    'fiscalyear': self.fiscalyear.rec_name,
+                    })
 
     @classmethod
     def create(cls, vlist):
@@ -111,9 +135,8 @@ class Period:
         for vals in vlist:
             if vals.get('fiscalyear'):
                 fiscalyear = FiscalYear(vals['fiscalyear'])
-                for sequence in ('service_sequence', 'service_sequence'):
-                    if not vals.get(sequence):
-                        vals[sequence] = getattr(fiscalyear, sequence).id
+                if not vals.get('service_sequence'):
+                    vals['service_sequence'] = getattr(fiscalyear, 'service_sequence').id
         return super(Period, cls).create(vlist)
 
     @classmethod
@@ -122,20 +145,19 @@ class Period:
 
         actions = iter(args)
         for periods, values in zip(actions, actions):
-            for sequence_name in ('service_sequence', 'service_sequence'):
-                if not values.get(sequence_name):
-                    continue
-                for period in periods:
-                    sequence = getattr(period, sequence_name)
-                    if (sequence and sequence.id != values[sequence_name]):
-                        if Service.search([
-                                    ('entry_date', '>=', period.start_date),
-                                    ('entry_date', '<=', period.end_date),
-                                    ('number_service', '!=', None),
-                                    ('type', '=', sequence_name[:-9]),
-                                    ]):
-                            cls.raise_user_error('change_invoice_sequence',
-                                (period.rec_name,))
+            if not values.get('service_sequence'):
+                continue
+            for period in periods:
+                sequence = getattr(period, 'service_sequence')
+                if (sequence and sequence.id != values['service_sequence']):
+                    if Service.search([
+                                ('entry_date', '>=', period.start_date),
+                                ('entry_date', '<=', period.end_date),
+                                ('number_service', '!=', None),
+                                ('type', '=', sequence_name[:-9]),
+                                ]):
+                        cls.raise_user_error('change_service_sequence',
+                            (period.rec_name,))
         super(Period, cls).write(*args)
 
     def get_service_sequence(self, invoice_type):

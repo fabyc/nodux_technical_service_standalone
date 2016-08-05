@@ -34,10 +34,13 @@ this repository contains the full copyright notices and license terms. -->
         </record>
 
         <record model="ir.action.act_window" id="act_service_out_form">
-            <field name="name">Registry</field>
+            <field name="name">Technical Service</field>
             <field name="res_model">service.service</field>
+            <field name="domain">[('type', '=', 'service')]</field>
+            <field name="context">{'type': 'service'}</field>
             <field name="search_value"></field>
         </record>
+
         <record model="ir.action.act_window.view" id="act_service_out_form_view1">
             <field name="sequence" eval="10"/>
             <field name="view" ref="service_view_tree"/>
@@ -60,27 +63,33 @@ this repository contains the full copyright notices and license terms. -->
             <field name="domain">[('state', '=', 'review')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
+        <record model="ir.action.act_window.domain" id="act_service_domain_entry_warranty">
+            <field name="name">Entry Warranty</field>
+            <field name="sequence" eval="30"/>
+            <field name="domain">[('garanty', '=', True)]</field>
+            <field name="act_window" ref="act_service_out_form"/>
+        </record>
         <record model="ir.action.act_window.domain" id="act_service_domain_without">
             <field name="name">Without Solution</field>
-            <field name="sequence" eval="30"/>
+            <field name="sequence" eval="40"/>
             <field name="domain">[('state', '=', 'without')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
         <record model="ir.action.act_window.domain" id="act_service_domain_warranty">
             <field name="name">Warranty not cover</field>
-            <field name="sequence" eval="40"/>
+            <field name="sequence" eval="50"/>
             <field name="domain">[('state', '=', 'warranty')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
         <record model="ir.action.act_window.domain" id="act_service_domain_ready">
             <field name="name">Ready</field>
-            <field name="sequence" eval="50"/>
+            <field name="sequence" eval="60"/>
             <field name="domain">[('state', '=', 'ready')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
         <record model="ir.action.act_window.domain" id="act_service_domain_delivered">
             <field name="name">Delivered</field>
-            <field name="sequence" eval="60"/>
+            <field name="sequence" eval="70"/>
             <field name="domain">[('state', '=', 'delivered')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
@@ -92,6 +101,45 @@ this repository contains the full copyright notices and license terms. -->
         </record>
         <menuitem parent="service_center" action="act_service_out_form"
             id="menu_service_form" sequence="1"/>
+
+        <!--Home service-->
+        <record model="ir.action.act_window" id="act_home_service_form">
+            <field name="name">Home Technical Service</field>
+            <field name="res_model">service.service</field>
+            <field name="domain">[('type', '=', 'home_service')]</field>
+            <field name="context">{'type': 'home_service'}</field>
+            <field name="search_value"></field>
+        </record>
+        <record model="ir.action.act_window.view" id="act_home_service_form_view1">
+            <field name="sequence" eval="10"/>
+            <field name="view" ref="service_view_tree"/>
+            <field name="act_window" ref="act_home_service_form"/>
+        </record>
+        <record model="ir.action.act_window.view" id="act_home_service_form_view2">
+            <field name="sequence" eval="20"/>
+            <field name="view" ref="service_view_form"/>
+            <field name="act_window" ref="act_home_service_form"/>
+        </record>
+        <record model="ir.action.act_window.domain" id="act_home_service_domain_draft">
+            <field name="name">Pending</field>
+            <field name="sequence" eval="10"/>
+            <field name="domain">[('state', '=', 'pending')]</field>
+            <field name="act_window" ref="act_home_service_form"/>
+        </record>
+        <record model="ir.action.act_window.domain" id="act_home_service_domain_ready">
+            <field name="name">Ready</field>
+            <field name="sequence" eval="60"/>
+            <field name="domain">[('state', '=', 'ready')]</field>
+            <field name="act_window" ref="act_home_service_form"/>
+        </record>
+        <record model="ir.action.act_window.domain" id="act_home_service_domain_all">
+            <field name="name">All</field>
+            <field name="sequence" eval="9999"/>
+            <field name="domain"></field>
+            <field name="act_window" ref="act_home_service_form"/>
+        </record>
+        <menuitem parent="service_center" action="act_home_service_form"
+            id="menu_home_service_form" sequence="2"/>
 
         <!--Lines-->
         <record model="ir.ui.view" id="service_line_view_form">
@@ -150,6 +198,17 @@ this repository contains the full copyright notices and license terms. -->
       <record id="seq_type_service" model="ir.sequence.type">
           <field name="name">Technical Service</field>
           <field name="code">service.service</field>
+      </record>
+
+      <record model="ir.sequence.type-res.group"
+          id="sequence_type_service_group_admin">
+          <field name="sequence_type" ref="seq_type_service"/>
+          <field name="group" ref="res.group_admin"/>
+      </record>
+      <record model="ir.sequence.type-res.group"
+          id="sequence_type_service_group_account_admin">
+          <field name="sequence_type" ref="seq_type_service"/>
+          <field name="group" ref="account.group_account_admin"/>
       </record>
 
     <!--Periferic -->

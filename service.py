@@ -22,11 +22,14 @@ import time
 from trytond.rpc import RPC
 import os
 from trytond import backend
+from trytond import security
+#from datetime import timedelta
 
 _ZERO = Decimal('0.0')
 
 _TYPE = [
     ('service', 'Servicio'),
+    ('home_service', 'Servicio a domicilio')
 ]
 
 __all__ = ['Periferic', 'Service', 'ServiceLine', 'HistoryLine',
@@ -71,8 +74,14 @@ class Service(Workflow, ModelSQL, ModelView):
         depends=_DEPENDS)
     party = fields.Many2One('party.party', 'Party', states=_STATES)
     number_service = fields.Char('No. Comprobante', readonly=True)
-    type = fields.Selection(_TYPE, 'Type', select=True, states=_STATES)
-    total = fields.Function(fields.Numeric('Total'), 'get_amount')
+    type = fields.Selection(_TYPE, 'Type', select=True, states={
+        'readonly': ((Eval('state') == 'delivered')
+            | Eval('context', {}).get('type')),
+        })
+
+    total = fields.Function(fields.Numeric('Total', states={
+        'invisible': Eval('type') == 'home_service',
+    }), 'get_amount')
 
     entry_date = fields.Date('Entry Date', states=_STATES,
         domain=[('entry_date', '<', Eval('delivery_date', None))],
@@ -106,7 +115,7 @@ class Service(Workflow, ModelSQL, ModelView):
             'invisible': ~Eval('garanty', True),
             'readonly': Eval('state') == 'delivered',
     })
-    photo = fields.Binary('Factura formato XML', help="Cargar el archivo xml para firma y autorizacion", states=_STATES)
+    photo = fields.Binary('Foto', states=_STATES)
     state = fields.Selection([
             ('pending', 'Pending'),
             ('review', 'In Review'),
@@ -120,7 +129,10 @@ class Service(Workflow, ModelSQL, ModelView):
     accessories= fields.Text('Accessories', states=_STATES)
     observations = fields.Text('Observations', states=_STATES)
     history_lines = fields.One2Many('service.service.history_lines', 'service', 'Lines')
-
+    total_home_service = fields.Numeric('Total', states={
+        'invisible': Eval('type') == 'service',
+    })
+    state_date = fields.Function(fields.Char('State Date'), 'get_state_date')
 
     @classmethod
     def __setup__(cls):
@@ -161,10 +173,31 @@ class Service(Workflow, ModelSQL, ModelView):
                 },
             })
 
+    @classmethod
+    def get_state_date(cls, services, names):
+        pool = Pool()
+        Date = pool.get('ir.date')
+        date_now = Date.today()
+        for name in names:
+            for service in services:
+                if delivery_date < date_now:
+                    result[name][service.id] = 'vencida'
+                elif delivery_date == date_now:
+                    result[name][service.id] = 'vence_hoy'
+                else:
+                    result[name][service.id] = ''
+                print "Anrtes de poner result", result
+        return result
+
     @staticmethod
     def default_entry_date():
         Date = Pool().get('ir.date')
         return Date.today()
+
+    @staticmethod
+    def default_delivery_date():
+        Date = Pool().get('ir.date')
+        return Date.today()+ datetime.timedelta(days=1)
 
     @staticmethod
     def default_state():
@@ -172,7 +205,7 @@ class Service(Workflow, ModelSQL, ModelView):
 
     @staticmethod
     def default_type():
-        return 'service'
+        return Transaction().context.get('type', 'service')
 
     @staticmethod
     def default_company():
@@ -194,6 +227,17 @@ class Service(Workflow, ModelSQL, ModelView):
             if key not in names:
                 del result[key]
         return result
+
+    @fields.depends('total', 'total_home_service')
+    def on_change_total_home_service(self):
+        res = {}
+
+        if self.total_home_service:
+            res['total'] =  self.total_home_service
+        else:
+            res['total'] = Decimal(0.0)
+
+        return res
 
     def set_number(self):
         pool = Pool()
@@ -386,6 +430,8 @@ class HistoryLine(ModelSQL, ModelView):
     })
     date = fields.DateTime('Hora')
 
+    user = fields.Char('Usuario')
+
     @classmethod
     def __setup__(cls):
         super(HistoryLine, cls).__setup__()
@@ -401,6 +447,17 @@ class HistoryLine(ModelSQL, ModelView):
         Date = Pool().get('ir.datetime')
         return Date.today()
     """
+    @fields.depends('description')
+    def on_change_description(self):
+        res = {}
+        User = Pool().get('res.user')
+        if self.description:
+            user = User(Transaction().user)
+            if user:
+                res['user'] = user.name
+            print "Resultado", res
+        return res
+
     @staticmethod
     def default_description():
         return ''

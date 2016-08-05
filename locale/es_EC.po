@@ -2,9 +2,70 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=utf-8\n"
 
-msgctxt "field:service.periferic,code:"
-msgid "Codigo"
-msgstr "Código"
+msgctxt "error:account.fiscalyear:"
+msgid "Fiscal year \"%(first)s\" and \"%(second)s\" have the same invoice sequence."
+msgstr ""
+
+msgctxt "error:account.fiscalyear:"
+msgid ""
+"You can not change invoice sequence in fiscal year \"%s\" because there are "
+"already posted invoices in this fiscal year."
+msgstr ""
+"No puede cambiar la secuencia de servicio técnico del año fiscal \"%s\" "
+"porque ya hay servicios entregados."
+
+msgctxt "error:account.period:"
+msgid "Period \"%(first)s\" and \"%(second)s\" have the same service sequence."
+msgstr "Periodo \"%(first)s\" and \"%(second)s\" tienen la misma secuencia."
+
+msgctxt "error:account.period:"
+msgid ""
+"Period \"%(period)s\" must have the same company as its fiscal year "
+"(%(fiscalyear)s)."
+msgstr ""
+
+msgctxt "error:account.period:"
+msgid ""
+"You can not change the service sequence in period \"%s\" because there is "
+"already an service posted in this period"
+msgstr ""
+"No puede cambiar la secuencia de servicio técnico del período \"%s\" porque "
+"ya hay servicios entregados."
+
+msgctxt "error:service.service.history_lines:"
+msgid "You can not add a line to history \"%(invoice)s\" that is delivered."
+msgstr "No puede agregar linea de historial, el servicio ya está entregado"
+
+msgctxt "error:service.service.history_lines:"
+msgid "You can not modify line \"%(line)s\" from history \"%(invoice)s\""
+msgstr "No puede modicar el historial"
+
+msgctxt "error:service.service.line:"
+msgid "You can not add a line to service \"%(invoice)s\" that is delivered."
+msgstr ""
+"No puede agregar lineas al servicio \"%(invoice)s\"  que ya está entregado."
+
+msgctxt "error:service.service.line:"
+msgid ""
+"You can not modify line \"%(line)s\" from service \"%(invoice)s\" that is "
+"delivered."
+msgstr ""
+
+msgctxt "error:service.service:"
+msgid "You can not modify service \"%s\" because it is delivered."
+msgstr "No puede modificar el servicio \"%s\" porque ya está entregado."
+
+msgctxt "field:account.fiscalyear,service_sequence:"
+msgid "Service Center Sequence"
+msgstr "Secuencia de Servicio Técnico"
+
+msgctxt "field:account.period,service_sequence:"
+msgid "Service Center Sequence"
+msgstr "Secuencia de Servicio Técnico"
+
+msgctxt "field:party.party,type_document:"
+msgid "Type Document"
+msgstr "Tipo de Documento"
 
 msgctxt "field:service.periferic,create_date:"
 msgid "Create Date"
@@ -98,10 +159,6 @@ msgctxt "field:service.service,party:"
 msgid "Party"
 msgstr "Cliente"
 
-msgctxt "field:service.service,photo:"
-msgid "Factura formato XML"
-msgstr ""
-
 msgctxt "field:service.service,rec_name:"
 msgid "Name"
 msgstr "Nombre"
@@ -118,17 +175,29 @@ msgctxt "field:service.service,state:"
 msgid "State"
 msgstr "Estado"
 
+msgctxt "field:service.service,state_date:"
+msgid "State Date"
+msgstr "Estado de fecha"
+
 msgctxt "field:service.service,technical:"
 msgid "Technical"
 msgstr "Técnico"
 
 msgctxt "field:service.service,total:"
 msgid "Total"
-msgstr ""
+msgstr "Total"
+
+msgctxt "field:service.service,total_home_service:"
+msgid "Total"
+msgstr "Total"
 
 msgctxt "field:service.service,transport:"
 msgid "Transport"
 msgstr "Transpote"
+
+msgctxt "field:service.service,type:"
+msgid "Type"
+msgstr "Tipo"
 
 msgctxt "field:service.service,write_date:"
 msgid "Write Date"
@@ -147,7 +216,7 @@ msgid "Create User"
 msgstr "Usuario creación"
 
 msgctxt "field:service.service.history_lines,date:"
-msgid "Date"
+msgid "Hora"
 msgstr "Fecha"
 
 msgctxt "field:service.service.history_lines,description:"
@@ -165,6 +234,10 @@ msgstr "Nombre"
 msgctxt "field:service.service.history_lines,service:"
 msgid "Service"
 msgstr "Servicio"
+
+msgctxt "field:service.service.history_lines,user:"
+msgid "Usuario"
+msgstr ""
 
 msgctxt "field:service.service.history_lines,write_date:"
 msgid "Write Date"
@@ -197,10 +270,6 @@ msgstr "Modelo"
 msgctxt "field:service.service.line,periferic:"
 msgid "Periferic"
 msgstr "Periferico"
-
-msgctxt "field:service.service.line,product:"
-msgid "Product"
-msgstr "Productos"
 
 msgctxt "field:service.service.line,product:"
 msgid "Type Work"
@@ -238,57 +307,45 @@ msgctxt "field:service.service.line,write_uid:"
 msgid "Write User"
 msgstr "Modificado por Usuario"
 
-msgctxt "field:service.trademark,code:"
-msgid "Codigo"
-msgstr "Código"
-
-msgctxt "field:service.trademark,create_date:"
-msgid "Create Date"
-msgstr "Fecha de Creación"
-
-msgctxt "field:service.trademark,create_uid:"
-msgid "Create User"
-msgstr "Usuario creación"
-
-msgctxt "field:service.trademark,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:service.trademark,name:"
-msgid "Trademark"
-msgstr "Marca"
-
-msgctxt "field:service.trademark,rec_name:"
-msgid "Name"
-msgstr "Nombre"
-
-msgctxt "field:service.trademark,write_date:"
-msgid "Write Date"
-msgstr "Fecha de Modificación"
-
-msgctxt "field:service.trademark,write_uid:"
-msgid "Write User"
-msgstr "Modificado por Usuario"
-
 msgctxt "help:service.service,garanty:"
 msgid "Income Garanty"
 msgstr "Ingreso por garantia"
-
-msgctxt "help:service.service,photo:"
-msgid "Cargar el archivo xml para firma y autorizacion"
-msgstr ""
 
 msgctxt "model:ir.action,name:"
 msgid "Service Center"
 msgstr "Centro Servicio Técnico"
 
+msgctxt "model:ir.action,name:act_home_service_form"
+msgid "Home Technical Service"
+msgstr "Servicio Técnico a Domicilio"
+
+msgctxt "model:ir.action,name:act_product_periferic"
+msgid "Periferics"
+msgstr "Perifericos"
+
 msgctxt "model:ir.action,name:act_service_form"
-msgid "Registry"
-msgstr "Registros"
+msgid "Service Center"
+msgstr "Centro de servicio Técnico"
 
 msgctxt "model:ir.action,name:act_service_out_form"
-msgid "Registry"
-msgstr "Registros"
+msgid "Technical Service"
+msgstr "Servicio Técnico"
+
+msgctxt "model:ir.action,name:report_service"
+msgid "Imprimir comprobante"
+msgstr ""
+
+msgctxt "model:ir.action.act_window.domain,name:act_home_service_domain_all"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "model:ir.action.act_window.domain,name:act_home_service_domain_draft"
+msgid "Pending"
+msgstr "Pendiente"
+
+msgctxt "model:ir.action.act_window.domain,name:act_home_service_domain_ready"
+msgid "Ready"
+msgstr "Listo"
 
 msgctxt "model:ir.action.act_window.domain,name:act_service_domain_all"
 msgid "All"
@@ -301,6 +358,11 @@ msgstr "Entregado"
 msgctxt "model:ir.action.act_window.domain,name:act_service_domain_draft"
 msgid "Pending"
 msgstr "Pendiente"
+
+msgctxt ""
+"model:ir.action.act_window.domain,name:act_service_domain_entry_warranty"
+msgid "Entry Warranty"
+msgstr "Ingreso por Garantia"
 
 msgctxt "model:ir.action.act_window.domain,name:act_service_domain_ready"
 msgid "Ready"
@@ -318,9 +380,21 @@ msgctxt "model:ir.action.act_window.domain,name:act_service_domain_without"
 msgid "Without Solution"
 msgstr "Sin Solución"
 
+msgctxt "model:ir.sequence.type,name:seq_type_service"
+msgid "Technical Service"
+msgstr "Servicio Técnico"
+
+msgctxt "model:ir.ui.menu,name:menu_home_service_form"
+msgid "Home Technical Service"
+msgstr "Servicio Técnico a Domicilio"
+
+msgctxt "model:ir.ui.menu,name:menu_product_periferic"
+msgid "Periferics"
+msgstr "Perifericos"
+
 msgctxt "model:ir.ui.menu,name:menu_service_form"
-msgid "Registry"
-msgstr "Registros"
+msgid "Technical Service"
+msgstr "Servicio Técnico"
 
 msgctxt "model:ir.ui.menu,name:service_center"
 msgid "Service Center"
@@ -342,9 +416,113 @@ msgctxt "model:service.service.line,name:"
 msgid "Service Line"
 msgstr "Linea de Servicio"
 
-msgctxt "model:service.trademark,name:"
-msgid "Trademark"
-msgstr "Marca"
+msgctxt "odt:service.service:"
+msgid ":"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "ACCESORIOS:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "C.I./RUC:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "COSTO REFERENCIAL:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "DIRECCIÓN:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "EMAIL:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "EST. DE ENTREGA"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "FALLA"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "FECHA"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "FECHA DE INGRESO:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "LOCAL:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "MARCA"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "MATRIZ (SUCRE Y AZUAY)"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "MODELO"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "MÓVIL:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "NOMBRES:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "OBSERVACIONES:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "PERIFÉRICO"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "SERIE"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "TELÉFONO:"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "TIPO TRABAJO"
+msgstr ""
+
+msgctxt "odt:service.service:"
+msgid "TÉCNICO"
+msgstr ""
+
+msgctxt "selection:party.party,type_document:"
+msgid ""
+msgstr ""
+
+msgctxt "selection:party.party,type_document:"
+msgid "Cedula"
+msgstr ""
+
+msgctxt "selection:party.party,type_document:"
+msgid "Consumidor Final"
+msgstr ""
+
+msgctxt "selection:party.party,type_document:"
+msgid "Pasaporte"
+msgstr ""
+
+msgctxt "selection:party.party,type_document:"
+msgid "RUC"
+msgstr ""
 
 msgctxt "selection:service.service,state:"
 msgid "Delivered"
@@ -370,6 +548,26 @@ msgctxt "selection:service.service,state:"
 msgid "Without Solution"
 msgstr "Sin Solución"
 
+msgctxt "selection:service.service,type:"
+msgid "Servicio"
+msgstr ""
+
+msgctxt "selection:service.service,type:"
+msgid "Servicio a domicilio"
+msgstr ""
+
+msgctxt "view:service.service.history_lines:"
+msgid "General"
+msgstr "General"
+
+msgctxt "view:service.service.history_lines:"
+msgid "History Line"
+msgstr "Lineas de Historial"
+
+msgctxt "view:service.service.history_lines:"
+msgid "History Lines"
+msgstr "Lineas de Historial"
+
 msgctxt "view:service.service.line:"
 msgid "General"
 msgstr "General"
@@ -388,7 +586,7 @@ msgstr "Historial"
 
 msgctxt "view:service.service:"
 msgid "Invoice"
-msgstr ""
+msgstr "Factura"
 
 msgctxt "view:service.service:"
 msgid "Invoices"
@@ -397,6 +595,10 @@ msgstr ""
 msgctxt "view:service.service:"
 msgid "Service"
 msgstr "Servicio"
+
+msgctxt "view:service.service:"
+msgid "Services"
+msgstr "Servicio Técnico"
 
 msgctxt "view:service.service:"
 msgid "_Delivered"
