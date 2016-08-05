@@ -49,7 +49,10 @@ this repository contains the full copyright notices and license terms. -->
     <label name="observations"/>
     <field name="observations" colspan="2"
         spell="Eval('party_lang')"/>
-    <newline/>
+    <label name="detail"/>
+    <field name="detail" colspan="2"
+        spell="Eval('party_lang')"/>
+    <newline/>    
     <label name="total"/>
     <field name="total"/>
     <newline/>

@@ -258,4 +258,11 @@ this repository contains the full copyright notices and license terms. -->
     <menuitem action="act_product_periferic" id="menu_product_periferic"
         parent="product.menu_main_product" sequence="50"/>
     </data>
+
+    <!--Password -->
+    <record model="ir.ui.view" id="password_warning_view_form">
+        <field name="model">service.service.password.warning</field>
+        <field name="type">form</field>
+        <field name="name">password_warning_form</field>
+    </record>
 </tryton>

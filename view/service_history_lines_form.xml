@@ -11,6 +11,10 @@ this repository contains the full copyright notices and license terms. -->
             <newline/>
             <label name="description"/>
             <field name="description"/>
+            <newline/>
+            <label name="password"/>
+            <field name="password" widget="password" xexpand="1"/>
+            <newline/>
         </page>
     </notebook>
 </form>

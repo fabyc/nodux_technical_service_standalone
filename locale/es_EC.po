@@ -119,6 +119,10 @@ msgctxt "field:service.service,delivery_date:"
 msgid "Estimated Delivery Date"
 msgstr "Fecha estimada entrega"
 
+msgctxt "field:service.service,detail:"
+msgid "Repair Detail"
+msgstr "Detalle reparación"
+
 msgctxt "field:service.service,entry_date:"
 msgid "Entry Date"
 msgstr "Fecha de Ingreso"
@@ -158,6 +162,10 @@ msgstr "Observaciones"
 msgctxt "field:service.service,party:"
 msgid "Party"
 msgstr "Cliente"
+
+msgctxt "field:service.service,photo:"
+msgid "Foto"
+msgstr ""
 
 msgctxt "field:service.service,rec_name:"
 msgid "Name"
@@ -226,6 +234,10 @@ msgstr "Descripción"
 msgctxt "field:service.service.history_lines,id:"
 msgid "ID"
 msgstr "ID"
+
+msgctxt "field:service.service.history_lines,password:"
+msgid "Password"
+msgstr "Contraseña"
 
 msgctxt "field:service.service.history_lines,rec_name:"
 msgid "Name"

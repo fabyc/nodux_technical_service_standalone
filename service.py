@@ -23,6 +23,13 @@ from trytond.rpc import RPC
 import os
 from trytond import backend
 from trytond import security
+try:
+    import bcrypt
+except ImportError:
+    bcrypt = None
+import random
+import hashlib
+import string
 #from datetime import timedelta
 
 _ZERO = Decimal('0.0')
@@ -133,6 +140,9 @@ class Service(Workflow, ModelSQL, ModelView):
         'invisible': Eval('type') == 'service',
     })
     state_date = fields.Function(fields.Char('State Date'), 'get_state_date')
+    detail = fields.Text('Repair Detail',  states={
+        'invisible': Eval('state') != 'delivered',
+    })
 
     @classmethod
     def __setup__(cls):
@@ -160,16 +170,16 @@ class Service(Workflow, ModelSQL, ModelView):
                     'invisible': Eval('state') != ('pending')
                 },
                 'ready': {
-                    'invisible': Eval('state').in_(['ready', 'without', 'delivered'])
+                    'invisible': Eval('state').in_(['pending','ready', 'without', 'delivered'])
                 },
                 'without': {
-                    'invisible': Eval('state').in_(['ready', 'without', 'delivered'])
+                    'invisible': Eval('state').in_(['pending','ready', 'without', 'delivered'])
                 },
                 'warranty': {
-                    'invisible': (~Eval('garanty', True))
+                    'invisible': ~Eval('garanty', True) | (Eval('state') == 'delivered')
                 },
                 'delivered': {
-                    'invisible': Eval('state').in_(['pending', 'delivered'])
+                    'invisible': Eval('state').in_(['review','pending', 'delivered'])
                 },
             })
 
@@ -430,7 +440,11 @@ class HistoryLine(ModelSQL, ModelView):
     })
     date = fields.DateTime('Hora')
 
-    user = fields.Char('Usuario')
+    user = fields.Char('Usuario', required = True)
+
+    password = fields.Char('Password', required = True, size=20, states={
+        'readonly': Eval('user') != '',
+    })
 
     @classmethod
     def __setup__(cls):
@@ -442,14 +456,76 @@ class HistoryLine(ModelSQL, ModelView):
                     'that is delivered.'),
                 })
 
-    @fields.depends('description')
-    def on_change_description(self):
+    def hash_password(self, password):
+        if not password:
+            return ''
+        return getattr(self, 'hash_' + self.hash_method())(password)
+
+    @staticmethod
+    def hash_method():
+        return 'bcrypt' if bcrypt else 'sha1'
+
+    @classmethod
+    def hash_sha1(cls, password):
+        if isinstance(password, unicode):
+            password = password.encode('utf-8')
+        salt = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        hash_ = hashlib.sha1(password + salt).hexdigest()
+        return '$'.join(['sha1', hash_, salt])
+
+    def check_password(self, password, hash_):
+        if not hash_:
+            return False
+        hash_method = hash_.split('$', 1)[0]
+        return getattr(self, 'check_' + hash_method)(password, hash_)
+
+    @classmethod
+    def check_sha1(cls, password, hash_):
+        if isinstance(password, unicode):
+            password = password.encode('utf-8')
+        if isinstance(hash_, unicode):
+            hash_ = hash_.encode('utf-8')
+        hash_method, hash_, salt = hash_.split('$', 2)
+        salt = salt or ''
+        assert hash_method == 'sha1'
+        return hash_ == hashlib.sha1(password + salt).hexdigest()
+
+    @classmethod
+    def hash_bcrypt(cls, password):
+        if isinstance(password, unicode):
+            password = password.encode('utf-8')
+        hash_ = bcrypt.hashpw(password, bcrypt.gensalt())
+        return '$'.join(['bcrypt', hash_])
+
+    @classmethod
+    def check_bcrypt(cls, password, hash_):
+        if isinstance(password, unicode):
+            password = password.encode('utf-8')
+        if isinstance(hash_, unicode):
+            hash_ = hash_.encode('utf-8')
+        hash_method, hash_ = hash_.split('$', 1)
+        assert hash_method == 'bcrypt'
+        return hash_ == bcrypt.hashpw(password, hash_)
+
+    @fields.depends('description', 'password')
+    def on_change_password(self):
         res = {}
         User = Pool().get('res.user')
+        user = None
+        value = False
         if self.description:
-            user = User(Transaction().user)
-            if user:
-                res['user'] = user.name
+            if self.password:
+                users = User.search([('password_hash', '!=', None)])
+                if users:
+                    for u in users:
+                        value = self.check_password(self.password, u.password_hash)
+                        if value == True:
+                            res['user'] = u.name
+                            break
+                if value == False:
+                    self.raise_user_error('Password no pertenece a ningun usuario registrado')
+        else:
+            res['user'] = user
         return res
 
     @staticmethod
@@ -477,25 +553,6 @@ class HistoryLine(ModelSQL, ModelView):
                         })
         super(HistoryLine, cls).delete(lines)
 
-    """
-    @classmethod
-    def write(cls, *args):
-        lines = sum(args[0::2], [])
-        cls.check_modify(lines)
-        super(HistoryLine, cls).write(*args)
-
-    @classmethod
-    def create(cls, vlist):
-        Service = Pool().get('service.service')
-        service_ids = []
-        for vals in vlist:
-            if vals.get('service'):
-                service_ids.append(vals.get('service'))
-        for service in Service.browse(service_ids):
-            if service.state in ('delivered'):
-                cls.raise_user_error('create', (service.number_service,))
-        return super(HistoryLine, cls).create(vlist)
-    """
 class ServiceReport(Report):
     __name__ = 'service.service'
 
