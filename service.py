@@ -40,7 +40,7 @@ _TYPE = [
 ]
 
 __all__ = ['Periferic', 'Service', 'ServiceLine', 'HistoryLine',
-            'ServiceReport']
+            'ServiceReport', 'DraftServiceStart', 'DraftService']
 
 _STATES = {
     'readonly': Eval('state') == 'delivered',
@@ -98,6 +98,26 @@ class Service(Workflow, ModelSQL, ModelView):
         depends=['entry_date'])
     technical = fields.Many2One('company.employee', 'Technical', states=_STATES)
     garanty = fields.Boolean('Garanty', help="Income Garanty", states=_STATES)
+    new = fields.Boolean('New', states={
+            'invisible': ~Eval('garanty', True),
+            'readonly': Eval('state') == 'delivered',
+    })
+    lined = fields.Boolean('Lined', states={
+            'invisible': ~Eval('garanty', True),
+            'readonly': Eval('state') == 'delivered',
+    })
+    beaten = fields.Boolean('Beaten', states={
+            'invisible': ~Eval('garanty', True),
+            'readonly': Eval('state') == 'delivered',
+    })
+    broken = fields.Boolean('Broken', states={
+            'invisible': ~Eval('garanty', True),
+            'readonly': Eval('state') == 'delivered',
+    })
+    stained = fields.Boolean('Stained', states={
+            'invisible': ~Eval('garanty', True),
+            'readonly': Eval('state') == 'delivered',
+    })
     invoice_date = fields.Date('Invoice Date', states={
             'invisible': ~Eval('garanty', True),
             'readonly': Eval('state') == 'delivered',
@@ -133,7 +153,9 @@ class Service(Workflow, ModelSQL, ModelView):
             ], 'State', readonly=True)
     lines = fields.One2Many('service.service.line', 'service', 'Lines', states=_STATES)
 
-    accessories= fields.Text('Accessories', states=_STATES)
+    accessories= fields.Text('Accessories', states={
+        'readonly': Eval('accessories') != '',
+    })
     observations = fields.Text('Observations', states=_STATES)
     history_lines = fields.One2Many('service.service.history_lines', 'service', 'Lines')
     total_home_service = fields.Numeric('Total', states={
@@ -142,6 +164,7 @@ class Service(Workflow, ModelSQL, ModelView):
     state_date = fields.Function(fields.Char('State Date'), 'get_state_date')
     detail = fields.Text('Repair Detail',  states={
         'invisible': Eval('state') != 'delivered',
+        'readonly': Eval('detail') != '',
     })
 
     @classmethod
@@ -176,12 +199,27 @@ class Service(Workflow, ModelSQL, ModelView):
                     'invisible': Eval('state').in_(['pending','ready', 'without', 'delivered'])
                 },
                 'warranty': {
-                    'invisible': ~Eval('garanty', True) | (Eval('state') == 'delivered')
+                    'invisible': ~Eval('garanty', True) | (Eval('state').in_(['pending','ready', 'without', 'delivered']))
                 },
                 'delivered': {
                     'invisible': Eval('state').in_(['review','pending', 'delivered'])
                 },
             })
+
+    @fields.depends('invoice_date', 'garanty')
+    def on_change_invoice_date(self):
+        res = {}
+        Date = Pool().get('ir.date')
+        if self.garanty != None:
+            year = Date.today()- datetime.timedelta(days=365)
+            if self.invoice_date < year:
+                res['invoice_date'] =  self.invoice_date
+                self.raise_user_error(u'Está seguro de la fecha de ingreso: "%s"'
+                    u'tiene mas de un año de garantia', (self.invoice_date))
+        else:
+            res['invoice_date'] =  self.invoice_date
+
+        return res
 
     @classmethod
     def get_state_date(cls, services, names):
@@ -203,6 +241,14 @@ class Service(Workflow, ModelSQL, ModelView):
     def default_entry_date():
         Date = Pool().get('ir.date')
         return Date.today()
+
+    @staticmethod
+    def default_accessories():
+        return ''
+
+    staticmethod
+    def default_detail():
+        return ''
 
     @staticmethod
     def default_delivery_date():
@@ -455,6 +501,9 @@ class HistoryLine(ModelSQL, ModelView):
                 'create': ('You can not add a line to history "%(invoice)s" '
                     'that is delivered.'),
                 })
+    @staticmethod
+    def default_date():
+        return datetime.datetime.now()
 
     def hash_password(self, password):
         if not password:
@@ -591,3 +640,26 @@ class ServiceReport(Report):
         localcontext['company'] = user.company
         return super(ServiceReport, cls).parse(report, records, data,
                 localcontext=localcontext)
+
+class DraftServiceStart(ModelView):
+    'Draft Service Start'
+    __name__ = 'service.draft_service.start'
+
+
+class DraftService(Wizard):
+    'Draft Service'
+    __name__ = 'service.draft_service'
+    start = StateView('service.draft_service.start',
+        'nodux_technical_service.draft_service_start_view_form', [
+            Button('Exit', 'end', 'tryton-cancel'),
+            Button('Reverse', 'draft_', 'tryton-ok', default=True),
+            ])
+    draft_ = StateAction('nodux_technical_service.act_service_form')
+
+    def do_draft_(self, action):
+        pool = Pool()
+        Service = pool.get('service.service')
+        services = Service.browse(Transaction().context['active_ids'])
+        for service in services:
+            service.state = 'review'
+            service.save()

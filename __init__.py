@@ -15,7 +15,11 @@ def register():
         HistoryLine,
         Party,
         Company,
+        DraftServiceStart,
         module='nodux_technical_service', type_='model')
     Pool.register(
         ServiceReport,
         module="nodux_technical_service", type_='report')
+    Pool.register(
+        DraftService,
+        module="nodux_technical_service", type_='wizard')

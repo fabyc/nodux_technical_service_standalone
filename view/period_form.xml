@@ -8,5 +8,7 @@ this repository contains the full copyright notices and license terms. -->
         <newline/>
         <label name="service_sequence"/>
         <field name="service_sequence"/>
+        <label name="home_service_sequence"/>
+        <field name="home_service_sequence"/>
     </xpath>
 </data>

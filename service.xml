@@ -259,10 +259,23 @@ this repository contains the full copyright notices and license terms. -->
         parent="product.menu_main_product" sequence="50"/>
     </data>
 
-    <!--Password -->
-    <record model="ir.ui.view" id="password_warning_view_form">
-        <field name="model">service.service.password.warning</field>
+    <!-- Service2Draft -->
+    <record model="ir.ui.view" id="draft_service_start_view_form">
+        <field name="model">service.draft_service.start</field>
         <field name="type">form</field>
-        <field name="name">password_warning_form</field>
+        <field name="name">draft_service_start_form</field>
     </record>
+
+    <record model="ir.action.wizard" id="wizard_draft_service">
+        <field name="name">Reverse Service</field>
+        <field name="wiz_name">service.draft_service</field>
+        <field name="model">service.service</field>
+    </record>
+
+    <record model="ir.action.keyword" id="act_wizard_draft_service_keyword">
+        <field name="keyword">form_action</field>
+        <field name="model">service.service,-1</field>
+        <field name="action" ref="wizard_draft_service"/>
+    </record>
+
 </tryton>

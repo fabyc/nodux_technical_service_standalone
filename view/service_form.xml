@@ -18,6 +18,21 @@ this repository contains the full copyright notices and license terms. -->
     <label name="delivery_date"/>
     <field name="delivery_date"/>
     <newline/>
+    <group col="10" colspan="4" id="states">
+      <label name="new"/>
+      <field name="new"/>
+      <label name="lined"/>
+      <field name="lined"/>
+      <label name="beaten"/>
+      <field name="beaten"/>
+      <label name="broken"/>
+      <field name="broken"/>
+      <label name="stained"/>
+      <field name="stained"/>
+    </group>
+
+
+    <newline/>
     <label name="invoice_date"/>
     <field name="invoice_date"/>
     <label name="invoice_number"/>
@@ -52,7 +67,7 @@ this repository contains the full copyright notices and license terms. -->
     <label name="detail"/>
     <field name="detail" colspan="2"
         spell="Eval('party_lang')"/>
-    <newline/>    
+    <newline/>
     <label name="total"/>
     <field name="total"/>
     <newline/>
