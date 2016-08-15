@@ -239,7 +239,7 @@ msgstr "Total"
 
 msgctxt "field:service.service,transport:"
 msgid "Transport"
-msgstr "Transpote"
+msgstr "Transporte"
 
 msgctxt "field:service.service,type:"
 msgid "Type"
@@ -453,6 +453,10 @@ msgstr "Servicio Técnico"
 msgctxt "model:ir.ui.menu,name:service_center"
 msgid "Service Center"
 msgstr "Centro Servicio Técnico"
+
+msgctxt "model:res.group,name:group_service_reverse"
+msgid "Nodux - Reversar Servicio"
+msgstr ""
 
 msgctxt "model:service.draft_service.start,name:"
 msgid "Draft Service Start"
