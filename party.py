@@ -31,6 +31,15 @@ class Party:
     def default_type_document():
         return '05'
 
+    @classmethod
+    def search_rec_name(cls, name, clause):
+        parties = cls.search([
+                ('vat_number',) + tuple(clause[1:]),
+                ], limit=1)
+        if parties:
+            return [('vat_number',) + tuple(clause[1:])]
+        return [('name',) + tuple(clause[1:])]
+        
 class Company:
     __name__ = 'company.company'
 
