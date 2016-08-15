@@ -246,7 +246,7 @@ class Service(Workflow, ModelSQL, ModelView):
     def default_accessories():
         return ''
 
-    staticmethod
+    @staticmethod
     def default_detail():
         return ''
 
