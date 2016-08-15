@@ -66,7 +66,7 @@ this repository contains the full copyright notices and license terms. -->
         <record model="ir.action.act_window.domain" id="act_service_domain_entry_warranty">
             <field name="name">Entry Warranty</field>
             <field name="sequence" eval="30"/>
-            <field name="domain">[('garanty', '=', True), ('state', '=', 'pending')]</field>
+            <field name="domain">[('garanty', '=', True), ('state', '!=', 'delivered')]</field>
             <field name="act_window" ref="act_service_out_form"/>
         </record>
         <record model="ir.action.act_window.domain" id="act_service_domain_without">
