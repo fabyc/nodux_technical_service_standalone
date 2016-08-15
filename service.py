@@ -660,6 +660,26 @@ class DraftService(Wizard):
         pool = Pool()
         Service = pool.get('service.service')
         services = Service.browse(Transaction().context['active_ids'])
+
+        origin = str(services)
+        def in_group():
+            pool = Pool()
+            ModelData = pool.get('ir.model.data')
+            User = pool.get('res.user')
+            Group = pool.get('res.group')
+            group = Group(ModelData.get_id('nodux_technical_service',
+                        'group_service_reverse'))
+            transaction = Transaction()
+            user_id = transaction.user
+            if user_id == 0:
+                user_id = transaction.context.get('user', user_id)
+            if user_id == 0:
+                return True
+            user = User(user_id)
+            return origin and group in user.groups
+        if not in_group():
+            self.raise_user_error("No esta autorizado a reversar un Servicio")
+
         for service in services:
             service.state = 'review'
             service.save()

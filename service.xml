@@ -278,4 +278,18 @@ this repository contains the full copyright notices and license terms. -->
         <field name="action" ref="wizard_draft_service"/>
     </record>
 
+    <!-- Group  -->
+    <record model="res.group" id="group_service_reverse">
+        <field name="name">Nodux - Reversar Servicio</field>
+    </record>
+    <record model="res.user-res.group"
+        id="user_admin_group_sale_return">
+        <field name="user" ref="res.user_admin"/>
+        <field name="group" ref="group_service_reverse"/>
+    </record>
+    <record model="res.user-res.group"
+        id="user_trigger_group_sale_return">
+        <field name="user" ref="res.user_admin"/>
+        <field name="group" ref="group_service_reverse"/>
+    </record>
 </tryton>
