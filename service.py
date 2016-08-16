@@ -572,7 +572,7 @@ class HistoryLine(ModelSQL, ModelView):
                             res['user'] = u.name
                             break
                 if value == False:
-                    self.raise_user_error('Password no pertenece a ningun usuario registrado')
+                    self.raise_user_error(u'Invalid password')
         else:
             res['user'] = user
         return res
