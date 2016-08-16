@@ -256,7 +256,7 @@ this repository contains the full copyright notices and license terms. -->
     </record>
 
     <menuitem action="act_product_periferic" id="menu_product_periferic"
-        parent="product.menu_main_product" sequence="50"/>
+        parent="service_center" sequence="50"/>
     </data>
 
     <!-- Service2Draft -->
