@@ -569,7 +569,7 @@ class HistoryLine(ModelSQL, ModelView):
                             res['user'] = u.name
                             break
                 if value == False:
-                    self.raise_user_error(u'Contraseña no coincide con los usuarisregistrado')
+                    self.raise_user_error(u'Contraseña no válida')
         else:
             res['user'] = user
         return res
