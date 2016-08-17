@@ -172,10 +172,8 @@ class Service(Workflow, ModelSQL, ModelView):
         super(Service, cls).__setup__()
 
         cls._error_messages.update({
-                'modify_invoice': ('You can not modify service "%s" because '
-                    'it is delivered.'),
-                'delete_cancel': ('You can not modify service "%s" because '
-                    'it is delivered.'),
+                'modify_invoice': ('You can not modify service "%s".'),
+                'delete_cancel': ('You can not delete service "%s".'),
                 })
 
         cls._transitions |= set((
@@ -405,9 +403,8 @@ class ServiceLine(ModelSQL, ModelView):
         super(ServiceLine, cls).__setup__()
         cls._error_messages.update({
                 'modify': ('You can not modify line "%(line)s" from service '
-                    '"%(invoice)s" that is delivered.'),
-                'create': ('You can not add a line to service "%(invoice)s" '
-                    'that is delivered.'),
+                    '"%(invoice)s".'),
+                'create': ('You can not add a line to service "%(invoice)s."'),
                 })
 
     @staticmethod
@@ -499,8 +496,7 @@ class HistoryLine(ModelSQL, ModelView):
         cls._error_messages.update({
                 'modify': ('You can not modify line "%(line)s" from history '
                     '"%(invoice)s"'),
-                'create': ('You can not add a line to history "%(invoice)s" '
-                    'that is delivered.'),
+                'create': ('You can not add a line to history "%(invoice)s" '),
                 })
     @staticmethod
     def default_date():
@@ -573,7 +569,7 @@ class HistoryLine(ModelSQL, ModelView):
                             res['user'] = u.name
                             break
                 if value == False:
-                    self.raise_user_error('Invalid password')
+                    self.raise_user_error(u'Contraseña no coincide con los usuarisregistrado')
         else:
             res['user'] = user
         return res
