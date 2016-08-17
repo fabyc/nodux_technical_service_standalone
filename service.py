@@ -273,7 +273,8 @@ class Service(Workflow, ModelSQL, ModelView):
         total = dict((i.id, _ZERO) for i in services)
         for service in services:
             for line in service.lines:
-                amount += line.reference_amount
+                if line.reference_amount:
+                    amount += line.reference_amount
             total[service.id] = amount
 
         result = {
