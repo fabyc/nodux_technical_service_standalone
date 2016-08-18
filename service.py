@@ -79,7 +79,7 @@ class Service(Workflow, ModelSQL, ModelView):
                 Eval('context', {}).get('company', -1)),
             ],
         depends=_DEPENDS)
-    party = fields.Many2One('party.party', 'Party', states=_STATES)
+    party = fields.Many2One('party.party', 'Party', states=_STATES, required=True)
     number_service = fields.Char('No. Comprobante', readonly=True)
     type = fields.Selection(_TYPE, 'Type', select=True, states={
         'readonly': ((Eval('state') == 'delivered')
@@ -388,14 +388,14 @@ class ServiceLine(ModelSQL, ModelView):
     service = fields.Many2One('service.service', 'Service', ondelete='CASCADE',
         select=True)
 
-    product = fields.Many2One('product.product', 'Type Work')
-    periferic = fields.Many2One('service.periferic', 'Periferic')
-    trademark = fields.Many2One('product.brand', 'Trademark')
-    model = fields.Char('Model')
+    product = fields.Many2One('product.product', 'Type Work', required = True)
+    periferic = fields.Many2One('service.periferic', 'Periferic', required = True)
+    trademark = fields.Many2One('product.brand', 'Trademark', required = True)
+    model = fields.Char('Model', required = True)
     series = fields.Char('Series')
-    failure = fields.Text('Failure')
+    failure = fields.Text('Failure', required = True)
     reference_amount = fields.Numeric('Reference Amount')
-    technical = fields.Many2One('company.employee', 'Technical')
+    technical = fields.Many2One('company.employee', 'Technical', required = True)
     #type_work = fields.Many2One('service.type_work', 'Type Work')
 
     @classmethod
