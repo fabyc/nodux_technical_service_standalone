@@ -399,19 +399,20 @@ class Service(Workflow, ModelSQL, ModelView):
             for service in services:
                 lines_services = {}
                 for line in service.lines:
-                    lines_services['fecha_entrada'] = service.entry_date
-                    lines_services['fecha_entrega']= service.delivery_date
+                    lines_services['fecha_entrada'] = service.entry_date.strftime('%d/%m/%Y')
+                    lines_services['fecha_entrega']= service.delivery_date.strftime('%d/%m/%Y')
                     lines_services['numero'] = service.number_service
                     lines_services['periferico'] = line.periferic.name
                     lines_services['marca'] = line.trademark.name
                     lines_services['modelo'] = line.model
                     lines_services['falla'] = line.failure
-                    lines_services['costo_referencial'] = line.reference_amount
+                    lines_services['costo_referencial'] = str(line.reference_amount)
                     lines_services['tecnico'] = line.technical.party.name
                     lines_services['estado'] = service.state
                     lines_services['accesorios'] = service.accessories
                     lines_services['detalle_reparacion'] = service.detail
                     all_services.append(lines_services)
+            print "Servicios ", all_services
             return all_services
         else:
             return []
