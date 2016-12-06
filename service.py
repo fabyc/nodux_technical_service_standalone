@@ -409,7 +409,7 @@ class Service(Workflow, ModelSQL, ModelView):
                     lines_services['costo_referencial'] = line.reference_amount
                     lines_services['tecnico'] = line.technical.party.name
                     lines_services['estado'] = service.state
-                    lines_services['accesorios'] = service.accesorios
+                    lines_services['accesorios'] = service.accessories
                     lines_services['detalle_reparacion'] = service.detail
                     all_services.append(lines_services)
             return all_services
