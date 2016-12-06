@@ -171,6 +171,8 @@ class Service(Workflow, ModelSQL, ModelView):
     def __setup__(cls):
         super(Service, cls).__setup__()
 
+        cls.__rpc__['getTechnicalService'] = RPC(check_access=False, readonly=False)
+
         cls._error_messages.update({
                 'modify_invoice': ('You can not modify service "%s".'),
                 'delete_cancel': ('You can not delete service "%s".'),
@@ -380,6 +382,22 @@ class Service(Workflow, ModelSQL, ModelView):
         cls.write([i for i in services if i.state != 'delivered'], {
                 'state': 'delivered',
                 })
+
+    @classmethod
+    def getTechnicalService(cls, identificacion):
+        print "Establece la conexion ", identificacion
+        pool = Pool()
+        Service = pool.get('service.service')
+        Party = pool.get('party.party')
+        paties = Party.search([('vat_number', '=', identificacion)])
+        for p in parties:
+            party = p
+        services = Service.search([('party', '=', party)])
+        print "Services", services
+        if services:
+            return services
+        else:
+            return []
 
 class ServiceLine(ModelSQL, ModelView):
     'Service Line'
