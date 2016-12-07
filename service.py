@@ -399,8 +399,8 @@ class Service(Workflow, ModelSQL, ModelView):
             for service in services:
                 lines_services = {}
                 for line in service.lines:
-                    lines_services[0] = str(service.entry_date)
-                    lines_services[1]= str(service.delivery_date)
+                    lines_services[0] = service.entry_date.strftime('%d/%m/%Y')
+                    lines_services[1]= service.delivery_date.strftime('%d/%m/%Y')
                     lines_services[2] = service.number_service
                     lines_services[3] = line.periferic.name
                     lines_services[4] = line.trademark.name
