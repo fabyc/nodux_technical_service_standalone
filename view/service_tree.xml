@@ -9,4 +9,7 @@ this repository contains the full copyright notices and license terms. -->
     <field name="delivery_date"/>
     <field name="state"/>
     <field name="state_date" tree_invisible="1"/>
+    <field name="equipo"/>
+    <field name="modelo"/>
+    <field name="marca"/>
 </tree>

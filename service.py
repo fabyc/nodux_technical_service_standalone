@@ -161,16 +161,30 @@ class Service(Workflow, ModelSQL, ModelView):
     total_home_service = fields.Numeric('Total', states={
         'invisible': Eval('type') == 'service',
     })
-    state_date = fields.Function(fields.Char('State Date'), 'get_state_date')
+
     detail = fields.Text('Repair Detail',  states={
         'invisible': Eval('state') != 'delivered',
         'readonly': Eval('detail') != '',
+    })
+    state_date = fields.Function(fields.Char('State Date'), 'get_state_date')
+
+    equipo = fields.Char('Equipo')
+    marca = fields.Char('Marca')
+    modelo = fields.Char('Modelo')
+
+    direccion = fields.Char(u'Dirección', states={
+        'invisible': ~Eval('party'),
+    })
+    telefono = fields.Char(u'Teléfono', states={
+        'invisible': ~Eval('party'),
+    })
+    correo =fields.Char(u'Correo Electrónico', states={
+        'invisible': ~Eval('party'),
     })
 
     @classmethod
     def __setup__(cls):
         super(Service, cls).__setup__()
-
         cls.__rpc__['getTechnicalService'] = RPC(check_access=False, readonly=False)
 
         cls._error_messages.update({
@@ -219,6 +233,52 @@ class Service(Workflow, ModelSQL, ModelView):
         else:
             res['invoice_date'] =  self.invoice_date
 
+        return res
+
+    @fields.depends('party')
+    def on_change_party(self):
+        res = {}
+        if self.party:
+            if self.party.addresses[0]:
+                res['direccion'] = self.party.addresses[0].street
+            else:
+                res['direccion'] = ""
+            if self.party.phone:
+                res['telefono'] = self.party.phone
+            elif self.party.mobile:
+                res['telefono'] = self.party.mobile
+            else:
+                res['telefono'] = ""
+            if self.party.email:
+                res['correo'] = self.party.email
+            else:
+                res['correo'] = ""
+        else:
+            res['direccion'] = ""
+            res['telefono'] = ""
+            res['correo'] = ""
+
+        return res
+
+    @fields.depends('lines')
+    def on_change_lines(self):
+        res= {}
+        if self.lines:
+            for line in self.lines:
+                if line.product:
+                    res['equipo'] = line.periferic.name
+                else:
+                    res['equipo'] = ""
+
+                if line.trademark:
+                    res['marca'] = line.trademark.name
+                else:
+                    res['marca'] = ""
+
+                if line.model:
+                    res['modelo'] = line.model
+                else:
+                    res['modelo'] = ""
         return res
 
     @classmethod
@@ -345,6 +405,64 @@ class Service(Workflow, ModelSQL, ModelView):
     @Workflow.transition('review')
     def review(cls, services):
         for service in services:
+            pool = Pool()
+            Contact = pool.get('party.contact_mechanism')
+            Address = pool.get('party.address')
+
+            if service.party:
+                if service.party.addresses[0].street:
+                    addresses = service.party.addresses[0]
+                    addresses.street = service.direccion
+                    addresses.save()
+                else:
+                    if service.direccion:
+                        party = party.service
+                        party.address = Address.create([{
+                                'street': service.direccion,
+                                'party':party.id
+                        }])
+                        party.save()
+                    else:
+                        service.raise_user_error(u'Actualice la dirección del cliente')
+
+                if service.party.email:
+                    emails = Contact.search([('party', '=', service.party), ('type', '=', 'email')])
+                    for email in emails:
+                        email.value = service.correo
+                        email.save()
+                else:
+                    if service.correo:
+                        contact_mechanisms = []
+                        contact_mechanisms.append({
+                                'type':'email',
+                                'value':service.correo,
+                                'party':party.id
+                        })
+                        contact_mechanisms = Contact.create(contact_mechanisms)
+                    else:
+                        service.raise_user_error('Actualice el correo del cliente')
+
+                if service.party.phone:
+                    phones = Contact.search([('party', '=', service.party), ('type', '=', 'phone')])
+                    for phone in phones:
+                        phone.value = service.telefono
+                        phone.save()
+                else:
+                    if service.telefono:
+                        contact_mechanisms = []
+                        contact_mechanisms.append({
+                                'type':'phone',
+                                'value':service.telefono,
+                                'party':party.id,
+                        })
+                        contact_mechanisms = Contact.create(contact_mechanisms)
+                    else:
+                        service.raise_user_error(u'Actualice el teléfono del cliente')
+
+            service.raise_user_warning('datos%s' % service.id,
+                   u'Está seguro que los datos del cliente:\n "%s"'
+                u'\nCorreo: "%s" y Teléfono: "%s", \nestán actualizados.', (service.party.name, service.correo, service.telefono))
+
             service.set_number()
 
         cls.write([i for i in services if i.state != 'review'], {
@@ -399,8 +517,8 @@ class Service(Workflow, ModelSQL, ModelView):
             for service in services:
                 lines_services = {}
                 for line in service.lines:
-                    lines_services[0] = service.entry_date.strftime('%d/%m/%Y')
-                    lines_services[1]= service.delivery_date.strftime('%d/%m/%Y')
+                    lines_services[0] = str(service.entry_date)
+                    lines_services[1]= str(service.delivery_date)
                     lines_services[2] = service.number_service
                     lines_services[3] = line.periferic.name
                     lines_services[4] = line.trademark.name
@@ -412,7 +530,6 @@ class Service(Workflow, ModelSQL, ModelView):
                     lines_services[10] = service.accessories
                     lines_services[11] = service.detail
                     all_services.append(lines_services)
-            print "Servicios ", all_services
             return all_services
         else:
             return []

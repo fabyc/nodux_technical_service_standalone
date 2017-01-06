@@ -11,6 +11,13 @@ this repository contains the full copyright notices and license terms. -->
     <label name="number_service"/>
     <field name="number_service"/>
     <newline/>
+    <label name="direccion"/>
+    <field name="direccion"/>
+    <label name="telefono"/>
+    <field name="telefono"/>
+    <label name="correo"/>
+    <field name="correo"/>
+    <newline/>
     <label name="garanty"/>
     <field name="garanty"/>
     <label name="entry_date"/>
@@ -58,6 +65,12 @@ this repository contains the full copyright notices and license terms. -->
               view_ids="nodux_technical_service.service_history_lines_view_tree_sequence"/>
         </page>
     </notebook>
+    <newline/>
+    <field name="equipo" invisible="1"/>
+    <field name="marca" invisible="1"/>
+    <field name="modelo" invisible="1"/>
+    <newline/>
+
     <label name="accessories"/>
     <field name="accessories" colspan="2"
         spell="Eval('party_lang')"/>
