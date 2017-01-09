@@ -436,7 +436,7 @@ class Service(Workflow, ModelSQL, ModelView):
                         contact_mechanisms.append({
                                 'type':'email',
                                 'value':service.correo,
-                                'party':party.id
+                                'party':service.party.id
                         })
                         contact_mechanisms = Contact.create(contact_mechanisms)
                     else:
@@ -453,7 +453,7 @@ class Service(Workflow, ModelSQL, ModelView):
                         contact_mechanisms.append({
                                 'type':'phone',
                                 'value':service.telefono,
-                                'party':party.id,
+                                'party':service.party.id,
                         })
                         contact_mechanisms = Contact.create(contact_mechanisms)
                     else:
