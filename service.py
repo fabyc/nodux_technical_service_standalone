@@ -635,7 +635,9 @@ class HistoryLine(ModelSQL, ModelView):
     description = fields.Text('Description', states={
         'readonly': Eval('description') != '',
     })
-    date = fields.DateTime('Hora')
+    date = fields.DateTime('Hora', states={
+        'readonly': Eval('date') != '',
+    })
 
     user = fields.Char('Usuario', required = True)
 
