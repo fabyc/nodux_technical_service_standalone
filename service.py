@@ -416,10 +416,10 @@ class Service(Workflow, ModelSQL, ModelView):
                     addresses.save()
                 else:
                     if service.direccion:
-                        party = party.service
+                        party = service.party
                         party.address = Address.create([{
                                 'street': service.direccion,
-                                'party':party.id
+                                'party':service.party.id
                         }])
                         party.save()
                     else:
