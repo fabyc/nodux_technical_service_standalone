@@ -39,7 +39,7 @@ class Party:
         if parties:
             return [('vat_number',) + tuple(clause[1:])]
         return [('name',) + tuple(clause[1:])]
-        
+
 class Company:
     __name__ = 'company.company'
 

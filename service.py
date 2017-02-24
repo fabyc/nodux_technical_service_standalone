@@ -235,6 +235,7 @@ class Service(Workflow, ModelSQL, ModelView):
 
         return res
 
+
     @fields.depends('party')
     def on_change_party(self):
         res = {}
@@ -399,6 +400,16 @@ class Service(Workflow, ModelSQL, ModelView):
             if (service.state in ('review', 'ready', 'without', 'warranty', 'delivered')):
                 cls.raise_user_error('delete_cancel', (service.number_service,))
         super(Service, cls).delete(services)
+
+    @classmethod
+    def copy(cls, services, default=None):
+        if default is None:
+            default = {}
+        default = default.copy()
+        default['state'] = 'pending'
+        default['number_service'] = None
+        default['type'] = 'service'
+        return super(Service, cls).copy(services, default=default)
 
     @classmethod
     @ModelView.button
@@ -588,7 +599,7 @@ class ServiceLine(ModelSQL, ModelView):
         if company and currency:
             with Transaction().set_context(date=currency_date):
                 res['reference_amount'] = Currency.compute(
-                    company.currency, self.product.cost_price,
+                    company.currency, self.product.list_price,
                     currency, round=False)
 
         return res
