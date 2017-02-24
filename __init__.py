@@ -18,10 +18,10 @@ def register():
         Company,
         DraftServiceStart,
         Address,
-        module='nodux_technical_service', type_='model')
+        module='nodux_technical_service_standalone', type_='model')
     Pool.register(
         ServiceReport,
-        module="nodux_technical_service", type_='report')
+        module="nodux_technical_service_standalone", type_='report')
     Pool.register(
         DraftService,
-        module="nodux_technical_service", type_='wizard')
+        module="nodux_technical_service_standalone", type_='wizard')

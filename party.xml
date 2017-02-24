@@ -22,11 +22,5 @@ this repository contains the full copyright notices and license terms. -->
             <field name="name">party_form</field>
         </record>
 
-        <!--record model="ir.action.keyword" id="check_vies_keyword">
-            <field name="keyword">form_action</field>
-            <field name="model">party.party, -1</field>
-            <field name="action" ref="party.wizard_check_vies"/>
-        </record-->
-
     </data>
 </tryton>
